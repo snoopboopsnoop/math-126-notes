@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+
+%packages for math formatting and symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+
+\graphicspath{{./img/}}
+
+%global lengths/margins
+\textheight 22cm
+\textwidth 17cm
+\oddsidemargin -0.5cm
+\evensidemargin -0.5cm
+\topmargin -1.5cm
+\topskip 0cm
+\headheight 0.5cm
+\headsep 1cm
+\marginparwidth 1.2cm
+
+%new commands
+\def\dx{\mathrm{d}x}
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Q{\mathbb{Q}}
+\def\C{\mathbb{C}}
+\def\qedsymbol{$\blacksquare$}
+
+%theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem*{prop*}{Proposition}
+
+
+\begin{document}
+\section{The KdV Equation}
+
+\subsection{Preliminaries}
+The simplest model of a wave is the one dimensional wave equation:
+\begin{equation}
+\frac{\partial^2 u}{\partial t^2} - c^2 \frac{\partial^2 u}{\partial x^2} = 0
+\end{equation}
+with $u(x, t)$ giving the amplitude of the wave and positive constant $c$.
+The wave equation's general solution, expressed in terms of \textit{characteristic variables} $(x \pm ct)$, is
+\begin{equation}
+	u(x, t) = f(x - ct) + g(x + ct)
+\end{equation}
+where $f, g$ are determined by given initial conditions. This solution is known as \textit{d'Alembert's solution}. From a glance at the solution it should be clear that it describes two waves, one moving to the left, and one to the right, both at speed $c$. The linearity of the wave equation allows for the principle of superposition, and as such neither wave interacts with itself nor one another. 
+\subsubsection {\textit{How does d'Alembert's solution relate to the "Fourier Ansatz" solution to the wave equation?}}
+Using a trig identity, the general solution to the wave equation that arises from the Fourier Ansatz can be turned into d'Alembert's solution (see \href{https://math.libretexts.org/Bookshelves/Differential_Equations/Differential_Equations_(Chasnov)/09%3A_Partial_Differential_Equations/9.06%3A_Solution_of_the_Wave_Equation}{here}) 
+Let's make an additional simplification, and consider only a wave which propagates in a single direction (say, $g = 0$. Then $u(x, t) = f(x - ct)$ satisfies the equation
+\begin{equation}
+	u_{t} + cu_{x} = 0
+\end{equation}
+In this solution, $f$ does not change shape (justification, which I do not fully understand, is given in the text). Of course, this is therefore the simplest wave; if we lessen our simplifying assumptions, and include, say, dispersion, for which there is a new \textit{dispersive} wave equation:
+\begin{equation}
+	u_t + u_x + u_{xxx} = 0
+\end{equation}
+
+
+
+\end{document}

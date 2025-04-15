@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+
+%packages for math formatting and symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[breakable, theorems, skins]{tcolorbox}
+
+\graphicspath{{./img/}}
+
+%global lengths/margins
+\allowdisplaybreaks
+\unitlength 1cm
+\textheight 22cm
+\textwidth 17cm
+\oddsidemargin -0.5cm
+\evensidemargin -0.5cm
+\topmargin -1.5cm
+\topskip 0cm
+\headheight 0.5cm
+\headsep 1cm
+%\marginparwidth 1.2cm
+\newlength\doubleind
+\addtolength{\doubleind}{\leftmargini}
+\addtolength{\doubleind}{\leftmarginii}
+\parindent 0pt
+\def\lstsp{\hspace{\labelsep}}
+
+
+%new commands
+\def\dx{\mathrm{d}x}
+\def\Z{\mathbb{Z}}
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Q{\mathbb{Q}}
+\def\C{\mathbb{C}}
+\def\qedsymbol{$\blacksquare$}
+
+%theorems
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem*{prop*}{Proposition}
+
+\tcbset{
+	exstyle/.style={enhanced, breakable, beforeafter skip balanced=10pt, coltitle=black, theorem style=plain, terminator sign={.\ \ \ }, fonttitle=\bfseries\upshape, fontupper=\upshape, blanker, borderline west={4pt}{-8pt}{orange!75!white}},
+}
+
+\newtcbtheorem[number within=subsubsection]{example}{Example}{exstyle}{ex}
+\newtcbtheorem[number within=subsubsection]{examples}{Examples}{exstyle}{ex}
+
+\begin{document}
+\setcounter{section}{8}
+\section{Continuum Mechanics}
+\par\noindent\rule{\textwidth}{1pt}
+\subsection{Example: Motion of a String}
+We have an elastic string lying along the x-axis. Consider when we displace the string in the $y$ direction by $y(x)$. If we slice the string into infinitesimally small segments of mass $m$, length $l$, and tension $T$, balancing the forces gives (using small angle approximation)
+
+\begin{equation}
+	\begin{aligned}
+		m\ddot{y}_n &= -\frac{T}{l}(y_n - y_{n-1}) + \frac{T}{l}(y_{n+1} - y_n)\\
+		\ddot{y}_n &= \frac{T}{ml}(y_{n+1} - 2y_n + y_{n-1})
+	\end{aligned}
+\end{equation}
+
+Taking the limit as $m, l \to 0$ and $\rho = \frac{m}{l}$ fixed
+
+
+
+
+\end{document}
