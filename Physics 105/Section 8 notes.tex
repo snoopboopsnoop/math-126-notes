@@ -7,6 +7,9 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\hypersetup {
+	colorlinks=true,
+}
 \usepackage[breakable, theorems, skins]{tcolorbox}
 
 \graphicspath{{./img/}}
@@ -39,6 +42,12 @@
 \def\C{\mathbb{C}}
 \def\qedsymbol{$\blacksquare$}
 
+%calculus
+\def\D{\mathrm{d}}
+\def\dint{\displaystyle\int}
+\newcommand{\diff}[3][]{\ensuremath{\frac{\D^{#1} #2}{\D #3^{#1}}}}
+\newcommand{\partials}[3][]{\ensuremath{\frac{\partial^{#1} {#2}}{\partial {#3}^{#1}}}}
+
 %theorems
 \newtheorem{theorem}{Theorem}
 \newtheorem*{theorem*}{Theorem}
@@ -51,8 +60,8 @@
 	exstyle/.style={enhanced, breakable, beforeafter skip balanced=10pt, coltitle=black, theorem style=plain, terminator sign={.\ \ \ }, fonttitle=\bfseries\upshape, fontupper=\upshape, blanker, borderline west={4pt}{-8pt}{orange!75!white}},
 }
 
-\newtcbtheorem[number within=subsubsection]{example}{Example}{exstyle}{ex}
-\newtcbtheorem[number within=subsubsection]{examples}{Examples}{exstyle}{ex}
+\newtcbtheorem[number within=subsection]{example}{Example}{exstyle}{ex}
+\newtcbtheorem[number within=subsection]{examples}{Examples}{exstyle}{ex}
 
 \begin{document}
 \setcounter{section}{8}
@@ -60,7 +69,6 @@
 \par\noindent\rule{\textwidth}{1pt}
 \subsection{Example: Motion of a String}
 We have an elastic string lying along the x-axis. Consider when we displace the string in the $y$ direction by $y(x)$. If we slice the string into infinitesimally small segments of mass $m$, length $l$, and tension $T$, balancing the forces gives (using small angle approximation)
-
 \begin{equation}
 	\begin{aligned}
 		m\ddot{y}_n &= -\frac{T}{l}(y_n - y_{n-1}) + \frac{T}{l}(y_{n+1} - y_n)\\
@@ -68,9 +76,132 @@ We have an elastic string lying along the x-axis. Consider when we displace the 
 	\end{aligned}
 \end{equation}
 
-Taking the limit as $m, l \to 0$ and $\rho = \frac{m}{l}$ fixed
+Recall the limit definition of the second derivative (for intuition on this, refer to timestamp 8:00 of \href{https://www.youtube.com/watch?v=ly4S0oi3Yz8&t=480s}{this 3Blue1Brown video}):
+\begin{equation}
+	\frac{y_{n+1} - 2y_n + y_{y_{n-1}}}{l^2} \to \partials[2]{y}{x} \quad\quad \text{(as $l \to 0$)}
+\end{equation}
+
+(see also Newton's "calculus of finite differences").
+
+\subsection{The Wave Equation}
+Taking the limit as $m, l \to 0$ and $\rho = \frac{m}{l}$ fixed, equation (1) becomes
+\begin{equation}
+	\tag{Wave Equation}
+	\partials[2]{y}{t} - \frac{T}{\rho}\partials[2]{y}{x} = 0
+\end{equation}
+
+We can look for a solution to this equation two (simple) ways:
+\begin{enumerate}
+	\item Fourier method
+	\item Method of characteristics
+\end{enumerate}
+
+\subsubsection{Fourier Method}
+We will solve the wave equation with a Fourier ansatz. Given our domain of $[0, l]$ and assuming the boundary condition $y(0, t) = y(l, t)$, the Fourier series of $y(x)$ is
+\begin{equation}
+	y(x, t) = \sum_{n = -\infty}^{\infty}c_n(t) e^{ik_n x} \quad \quad {k_n = \frac{2\pi n}{l}}
+\end{equation}
+
+Plugging this ansatz back into the wave equation,
+\begin{align*}
+	\sum_{n}\ddot{c_n}(t)e^{ik_nx} + c_s^2\sum_{n}c_n(t)k_n^2e^{ik_n x} &= 0 && (c_s^2 = \frac{T}{\rho})\\
+	\implies \ddot{c_n}(t) + c_s^2k^2c_n(t) &= 0 && \text{(by orthogonality of exp)}
+\end{align*}
+
+This is a simple harmonic oscillator (SHO) ODE; substituting $\omega_n^2 = c_s^2 k_n^2$ (this is known as a \hyperref[sec:dispersionrel]{dispersion relation} -- we call $k_n$ the wavenumber and $\omega_n$ the frequency) and solving the auxiliary equation gives the general solution for $a_n$,
+\begin{equation}
+	c_n(t) = A_ne^{i\omega_n t} + B_n e^{-i\omega_n t}
+\end{equation}
+
+So our general solution for $y(x, t)$ looks like
+\begin{equation}
+	y(x, t) = \sum_{n=-\infty}^{\infty} A_n e^{i(k_n x + \omega_n t)} + B_n e^{i(k_n x - \omega_n t)}
+\end{equation}
+
+with $A_n$ and $B_n$ determined by initial conditions.
+
+\subsubsection{Method of Characteristics}
+
+It turns out that the general solution of the wave equation can be expressed another way, known as \textbf{D'Alembert's solution},
+\begin{equation*}
+y(x, t) = \underbrace{f(x - c_s t)}_{\text{right}} + \underbrace{g(x + c_s t)}_{\text{left}}
+\end{equation*}
+
+This is most easily derived using the method of \textit{canonical coordinates}. We begin by making the following substitution:
+\begin{align*}
+	\xi &= x + ct\\
+	\eta &= x - ct
+\end{align*}
+
+Some use of the chain rule gives the following equations,
+\begin{equation}
+	\begin{aligned}
+		y_x &= y_{\xi} + y_{\eta}\\
+		y_t &= c(y_{\xi} - y_{\eta})\\
+		y_{xx} &= y_{\xi\xi} + 2y_{\xi\eta} + y_{\xi\xi}\\
+		y_{tt} &= c^2(y_{\xi\xi} - 2y_{\xi\eta} + y_{\eta\eta})
+	\end{aligned}
+\end{equation}
+
+Substitution into the wave equation produces the conveniently simple
+\begin{equation}
+	y_{\xi\eta} = 0
+\end{equation}
+
+Integrate both sides by $\eta$ and $\xi$ to recover d'Alembert's solution.
+
+\subsection{Dispersion Relations}
+\label{sec:dispersionrel}
+
+Dispersion relations describe the dependence of wave propagation on frequency/wavelength. First introduced by Laplace for water waves, they are essential for understanding the transportation of energy by waves.
+
+\indent\hspace{15pt} They can be given as a relationship between frequency and wavenumber/wavelength or between energy and momentum. Given a relation we can define
+\begin{itemize}
+	\item Group velocity, $v_g = \partials{\omega}{k}$, the speed at which the "peak" of a wavepacket propagates.
+	\item Phase velocity, $v_p = \frac{\omega}{k}$, the speed at which a constant phase surface propagates.
+\end{itemize}
+
+If the dispersion relation is linear, a wavepacket will propagate without changing shape. If it is non-linear then the wave will change as it propagates. Note that a dispersion relation is a property of the system through which the wave is traveling, not of the wave itself.
+
+\begin{example}{Deep Water Waves}{}
+	For deep water waves, $\omega = \sqrt{gk}$. Thus,
+	\begin{equation*}
+		v_g = \diff[]{\omega}{k} = \frac{1}{2} \sqrt{\frac{g}{k}} = \frac{1}{2}\frac{\omega}{k} = \frac{1}{2} v_p
+	\end{equation*}
+	Since $v_g \neq v_p$, the different $k$s of the wave envelope move at different frequencies, causing distortion. This produces the \href{https://en.wikipedia.org/wiki/Kelvin_wake_pattern}{Kelvin wake pattern} often seen following ducks in a pond!
+\end{example}
+
+Additionally, in a system with damping the dispersion relation can become complex. (Will not explore this right now)
 
 
 
+\end{itemize}
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
