@@ -5,12 +5,24 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{graphicx}
+\graphicspath{
+	{C:/Users/cheng/Documents/LaTeX/}
+}
 \usepackage{float}
 \usepackage{hyperref}
+\hypersetup {
+	colorlinks=true,
+}
+\usepackage[breakable, theorems, skins]{tcolorbox}
 
-\graphicspath{{./img/}}
+
+\def\rcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{ScriptR}}$}}}
+\def\brcurs{{\mbox{$\resizebox{.16in}{.08in}{\includegraphics{BoldR}}$}}}
+\def\hrcurs{{\mbox{$\hat \brcurs$}}}
 
 %global lengths/margins
+\allowdisplaybreaks
+\unitlength 1cm
 \textheight 22cm
 \textwidth 17cm
 \oddsidemargin -0.5cm
@@ -19,7 +31,13 @@
 \topskip 0cm
 \headheight 0.5cm
 \headsep 1cm
-\marginparwidth 1.2cm
+%\marginparwidth 1.2cm
+\newlength\doubleind
+\addtolength{\doubleind}{\leftmargini}
+\addtolength{\doubleind}{\leftmarginii}
+\parindent 0pt
+\def\lstsp{\hspace{\labelsep}}
+\def\tab{\indent\hspace{15pt}}
 
 %new commands
 \def\dx{\mathrm{d}x}
@@ -30,6 +48,12 @@
 \def\C{\mathbb{C}}
 \def\qedsymbol{$\blacksquare$}
 
+%calculus
+\def\D{\mathrm{d}}
+\def\dint{\displaystyle\int}
+\newcommand{\diff}[3][]{\ensuremath{\frac{\D^{#1} #2}{\D #3^{#1}}}}
+\newcommand{\partials}[3][]{\ensuremath{\frac{\partial^{#1} {#2}}{\partial {#3}^{#1}}}}
+
 %theorems
 \newtheorem{theorem}{Theorem}
 \newtheorem*{theorem*}{Theorem}
@@ -38,6 +62,15 @@
 \newtheorem{prop}{Proposition}
 \newtheorem*{prop*}{Proposition}
 
+\tcbset{
+	exstyle/.style={enhanced, breakable, beforeafter skip balanced=10pt, coltitle=black, theorem style=plain, terminator sign={.\ \ \ }, fonttitle=\bfseries\upshape, fontupper=\upshape, blanker, borderline west={4pt}{-8pt}{orange!75!white}},
+	asidestyle/.style={enhanced, breakable, beforeafter skip balanced=10pt, blanker, borderline west={4pt}{-8pt}{black!50!white}},
+}
+
+\newtcbtheorem[number within=subsection]{example}{Example}{exstyle}{ex}
+\newtcbtheorem[number within=subsection]{examples}{Examples}{exstyle}{ex}
+
+\newtcolorbox{aside}{asidestyle}
 
 \begin{document}
 \section{The KdV Equation}
@@ -53,8 +86,10 @@ The wave equation's general solution, expressed in terms of \textit{characterist
 	u(x, t) = f(x - ct) + g(x + ct)
 \end{equation}
 where $f, g$ are determined by given initial conditions. This solution is known as \textit{d'Alembert's solution}. From a glance at the solution it should be clear that it describes two waves, one moving to the left, and one to the right, both at speed $c$. The linearity of the wave equation allows for the principle of superposition, and as such neither wave interacts with itself nor one another. 
-\subsubsection {\textit{How does d'Alembert's solution relate to the "Fourier Ansatz" solution to the wave equation?}}
-Using a trig identity, the general solution to the wave equation that arises from the Fourier Ansatz can be turned into d'Alembert's solution (see \href{https://math.libretexts.org/Bookshelves/Differential_Equations/Differential_Equations_(Chasnov)/09%3A_Partial_Differential_Equations/9.06%3A_Solution_of_the_Wave_Equation}{here}) 
+\begin{aside} {\textit{How does d'Alembert's solution relate to the "Fourier Ansatz" solution to the wave equation?}} {}
+\medbreak Using a trig identity, the general solution to the wave equation that arises from the Fourier Ansatz can be turned into d'Alembert's solution (see \href{https://math.libretexts.org/Bookshelves/Differential_Equations/Differential_Equations_(Chasnov)/09%3A_Partial_Differential_Equations/9.06%3A_Solution_of_the_Wave_Equation}{here})
+\end{aside}
+
 Let's make an additional simplification, and consider only a wave which propagates in a single direction (say, $g = 0$. Then $u(x, t) = f(x - ct)$ satisfies the equation
 \begin{equation}
 	u_{t} + cu_{x} = 0
@@ -63,6 +98,47 @@ In this solution, $f$ does not change shape (justification, which I do not fully
 \begin{equation}
 	u_t + u_x + u_{xxx} = 0
 \end{equation}
+
+We can consider a solution known as the \textit{harmonic} wave solution
+\begin{equation}
+	u(x, t) = e^{i(kx - \omega t)}
+	\label{eq:harmonic sol}
+\end{equation}
+
+(This is a simplification of the general solution to the standard wave equation -- see \href{https://github.com/snoopboopsnoop/math-126-notes/blob/main/Physics%20105/Section%208%20notes.pdf}{here})
+
+\tab\eqref{eq:harmonic sol} is a solution to the dispersive wave equation if
+\begin{equation}
+	\omega = k - k^3
+\end{equation}
+
+This is known as a \textit{dispersion relation} (see ibid.) so we can call $k$ the wavenumber and $\omega$ the frequency. Some algebra produces the following equations,
+\begin{equation*}
+	kx - \omega t = k(x-(1-k^2)t)
+\end{equation*}
+\begin{equation}
+	c = \frac{\omega}{k} = 1 - k^2
+\end{equation}
+
+This last equation says that the speed at which the wave propagates depends on its wavenumber (this value, known as the \texit{phase velocity}, describes the velocity of a single component of a wave profile). Thus waves of different wave numbers propagate at different velocities, the defining characteristic of a dispersive wave.\medbreak
+
+We can also define the \textit{group velocity},
+\begin{equation}
+	c_g = \diff{\omega}{k} = 1 - 3k^2
+\end{equation}
+
+which describes the velocity of a whole wave packet. \href{https://www.youtube.com/watch?v=tlM9vq-bepA}{This video} is a great visualization of the difference between group and phase velocity. For many wave motions it is the case that $c_g \leq c$, though the video above is one such exception.
+
+\begin{aside}
+	Can a wave be described as two components like \eqref{eq:harmonic sol} but with different wavenumbers? That is, can a single wave have two components that move at different velocities?
+\end{aside}
+
+The book says yes, we \textit{can} represent a wave as a superposition of different harmonic solutions of varying wavenumbers:
+\begin{equation}
+	u(x, t) = \int_{-\infty}^{\infty} A(k) e^{i(kx - \omega(k)t)}\, dk
+\end{equation}
+
+(Note similarity to Fourier transform?) The effect of this superposition is a wave profile which changes as it moves; the differing speeds of the components cause the wave to \textit{disperse}.
 
 
 
