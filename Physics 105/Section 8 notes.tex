@@ -64,10 +64,10 @@
 \newtcbtheorem[number within=subsection]{examples}{Examples}{exstyle}{ex}
 
 \begin{document}
-\setcounter{section}{8}
+\setcounter{section}{7}
 \section{Continuum Mechanics}
 \par\noindent\rule{\textwidth}{1pt}
-\subsection{Example: Motion of a String}
+\subsection{Example: Motion of a String} \label{system1}
 We have an elastic string lying along the x-axis. Consider when we displace the string in the $y$ direction by $y(x)$. If we slice the string into infinitesimally small segments of mass $m$, length $l$, and tension $T$, balancing the forces gives (using small angle approximation)
 \begin{equation}
 	\begin{aligned}
@@ -174,8 +174,77 @@ If the dispersion relation is linear, a wavepacket will propagate without changi
 Additionally, in a system with damping the dispersion relation can become complex. (Will not explore this right now)
 
 
+\subsection{The Klein-Gordon Equation}
+Let's look at another physical system. This time, we have a row of hanging masses, separated by distance $l$, hanging from the x-axis a distance $r$. Each mass is connected by a spring of constant $k$. We use $\phi_i$ to measure the angle from vertical of the $i$th mass. To make things simple, we assume the masses can only move small amounts, so $|\phi_i| << 1$.
 
-\end{itemize}
+\tab The kinetic energy of each mass is
+\begin{equation*}
+	T = \frac{1}{2}m(\dot{x_i})^2 = \frac{1}{2}m(r\dot{\phi_i})^2 = \frac{1}{2}mr^2\dot{\phi}_i^2
+\end{equation*}
+
+and potential energy is
+\begin{equation*}
+	V = V_{\text{grav}} + V_{\text{spring}}
+\end{equation*}
+
+To find gravitational potential energy we'll use a Taylor expansion to get rid of some higher-order terms and drop constants (the Euler-Lagrange equation isn't affected by them):
+\begin{align*}
+	\Delta h &= r - h_i\\
+	h_i &= r\cos\phi_i \approx r\left(1 - \frac{\phi_i^2}{2}\right)\\
+	\implies \Delta h &= \frac{1}{2}r\phi_i^2
+\end{align*}
+
+so
+\begin{equation*}
+	V_{\text{grav}} = mg\Delta h = \frac{1}{2}mgr\phi_i^2
+\end{equation*}
+
+$V_{\text{spring}}$ is just given by (using small-angle approximation)
+\begin{equation*}
+	V_{\text{spring}} = \frac{1}{2}k(r\sin\phi_{i+1} - r\sin\phi_i)^2 \approx \frac{1}{2}kr^2(\phi_{i+1} - \phi_i)^2
+\end{equation*}
+
+The Langrangian of the system is therefore
+\begin{equation*}
+	L = \sum_i\frac{1}{2}mr^2\dot{\phi}_i^2 - \frac{1}{2}mgr\phi_i^2 - \frac{1}{2}kr^2(\phi_{i+1} - \phi_i)^2
+\end{equation*}
+
+Or more conveniently
+\begin{equation}
+	L = \sum_i\frac{1}{2}l\frac{m}{l}r^2\dot{\phi_i}^2 - \frac{1}{2}l\frac{m}{l}gr\phi_i^2 - \frac{1}{2}kr^2l^2\left(\frac{\phi_{i+1} - \phi_i}{l}\right)^2\\
+\end{equation}
+
+Now think about what we're trying to model with this system. In section \ref{system1} we used our model to understand where the wave equation comes from, and clearly here we would like to do the same. So rather than think about only these discrete masses, we'd like to construct a continuum. In taking the continuum limit, we now consider the Lagrangian density,
+\begin{equation*}
+	\mathcal{L} = \frac{1}{2}\frac{m}{l}r^2\dot{\phi}^2 - \frac{1}{2}\frac{m}{l}gr\phi^2 - \frac{1}{2}kr^2l\phi'^2\\
+\end{equation*}
+
+We can use the Euler-Lagrange equations
+\begin{equation}
+	\diff{}{t}\left[\partials{\mathcal{L}}{\dot{\phi}}\right] + \diff{}{x}\left[\partials{\mathcal{L}}{\phi'}\right] - \partials{\mathcal{L}}{\phi} = 0
+\end{equation}
+
+to derive an equation of motion:
+\begin{equation*}
+	\frac{m}{l}r^2\ddot{\phi} - kr^2l\phi'' + \frac{m}{l}gr\phi = 0
+\end{equation*}
+
+Let $\mu = \frac{mr^2}{l}$ and $\lambda = kr^2l$,
+\begin{equation*}
+	\mu\ddot{\phi} - \lambda\phi' + \frac{\mu g}{r}\phi = 0
+\end{equation*}
+\begin{equation}
+	\ddot{\phi} - \frac{\lambda}{\mu}\phi'' + \omega_0^2\phi = 0
+\end{equation}
+
+Where $\omega_0^2 = \frac{g}{r}$. In "natural units" (i.e. set all the constants to 1), this is the \textbf{Klein-Gordon equation},
+\begin{equation}
+	\ddot{\phi} - \phi'' + \phi = 0
+\end{equation}
+
+which has use cases in the field of relativistic quantum field theory.
+
+\subsection{The Sine-Gordon Equation}
 
 \end{document}
 
