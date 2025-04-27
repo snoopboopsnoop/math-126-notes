@@ -163,12 +163,16 @@ Dispersion relations describe the dependence of wave propagation on frequency/wa
 
 If the dispersion relation is linear, a wavepacket will propagate without changing shape. If it is non-linear then the wave will change as it propagates. Note that a dispersion relation is a property of the system through which the wave is traveling, not of the wave itself.
 
-\begin{example}{Deep Water Waves}{}
+\begin{example}{Water Waves}{}
+	The naming of water waves is a little misleading, as their classification does not only depend on water depth. A deep water wave is one whose wavelength is more than twice that of depth, $h > \frac{1}{2}\lambda$, whereas a shallow one requires $h < \frac{1}{20}\lambda$. Let's compare their dispersion relations.
 	For deep water waves, $\omega = \sqrt{gk}$. Thus,
 	\begin{equation*}
 		v_g = \diff[]{\omega}{k} = \frac{1}{2} \sqrt{\frac{g}{k}} = \frac{1}{2}\frac{\omega}{k} = \frac{1}{2} v_p
 	\end{equation*}
-	Since $v_g \neq v_p$, the different $k$s of the wave envelope move at different frequencies, causing distortion. This produces the \href{https://en.wikipedia.org/wiki/Kelvin_wake_pattern}{Kelvin wake pattern} often seen following ducks in a pond!
+	Since $v_g \neq v_p$, the different $k$s of the wave envelope move at different frequencies, causing distortion. This produces the \href{https://en.wikipedia.org/wiki/Kelvin_wake_pattern}{Kelvin wake pattern} often seen following ducks in a pond.\medbreak
+	The dispersion relation for shallow water waves is $\omega = k\sqrt{gh}$. Then $v_g = v_p$! This means the wavepacket never disperses, physically seen by a clean wavefront (no distortion over time).\medbreak
+	As a fun aside, back to the duck: theoretically, in shallow enough water, a duck can swim faster than the wavepacket it creates, creating a \href{https://www.wikiwand.com/en/articles/Mach_wave}{mach cone} and producing a supersonic shock wave!
+
 \end{example}
 
 Additionally, in a system with damping the dispersion relation can become complex. (Will not explore this right now)
@@ -219,7 +223,7 @@ Now think about what we're trying to model with this system. In section \ref{sys
 	\mathcal{L} = \frac{1}{2}\frac{m}{l}r^2\dot{\phi}^2 - \frac{1}{2}\frac{m}{l}gr\phi^2 - \frac{1}{2}kr^2l\phi'^2\\
 \end{equation*}
 
-We can use the Euler-Lagrange equations
+We can use the Euler-Lagrange equation
 \begin{equation}
 	\diff{}{t}\left[\partials{\mathcal{L}}{\dot{\phi}}\right] + \diff{}{x}\left[\partials{\mathcal{L}}{\phi'}\right] - \partials{\mathcal{L}}{\phi} = 0
 \end{equation}
